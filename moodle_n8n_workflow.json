@@ -1,0 +1,85 @@
+{
+  "name": "Moodle to MySQL Sync",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days"
+            }
+          ]
+        }
+      },
+      "id": "e83e6080-b2cc-4977-9404-51781eb83c84",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://host.docker.internal:5001/webservice/rest/server.php",
+        "options": {}
+      },
+      "id": "423f7902-1402-4b71-b06f-40e94bb5be8b",
+      "name": "API Moodle",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "table": "dataset_moodle_final",
+        "columns": "login_count,activity_count,resources_viewed,days_inactive,average_grade,assignments_submitted,forum_posts,completion_rate,quiz_attempts_count,dropout",
+        "options": {}
+      },
+      "id": "2db4e3d6-4444-469b-98b7-60e06de93d05",
+      "name": "MySQL Base de Donnees",
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.1,
+      "position": [
+        680,
+        300
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "API Moodle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API Moodle": {
+      "main": [
+        [
+          {
+            "node": "MySQL Base de Donnees",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f782f9d5-f8c6-4d0a-9d62-f1e56bdf483b",
+  "id": "QzZ2JvH3lGZ"
+}

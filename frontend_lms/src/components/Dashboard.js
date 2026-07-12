@@ -4,16 +4,25 @@ import ApprenantCard from "./ApprenantCard";
 import RiskChart from "./RiskChart";
 
 function Dashboard() {
+  
   const [apprenants, setApprenants] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [utilisateurs, setUtilisateurs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erreur, setErreur] = useState(null);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:5000/api/apprenants/")
-      .then(response => {
-        setApprenants(response.data);
+    axios.all([
+      axios.get("http://127.0.0.1:5000/api/apprenants/"),
+      axios.get("http://127.0.0.1:5000/api/statistiques"),
+      axios.get("http://127.0.0.1:5000/api/utilisateurs")
+    ])
+      .then(axios.spread((resApprenants,reSStats,resUsers ) => {
+        setApprenants(resApprenants.data);
+        setStats(reSStats.data);
+        setUtilisateurs(resUsers.data);
         setLoading(false);
-      })
+      }))
       .catch(err => {
         setErreur("Impossible de contacter le serveur Flask.");
         setLoading(false);
@@ -23,8 +32,16 @@ function Dashboard() {
   if (loading) return <p>Chargement...</p>;
   if (erreur)  return <p style={{ color: "red" }}>{erreur}</p>;
 
-  const aRisque = apprenants.filter(a => a.niveau_risque >= 0.5);
-  const ok      = apprenants.filter(a => a.niveau_risque < 0.5);
+  // Remplace tes lignes actuelles par celles-ci
+  const aRisque = apprenants.filter(a => {
+  const score = parseFloat(a.niveau_risque);
+  return !isNaN(score) && score >= 0.5;
+  });
+
+  const ok = apprenants.filter(a => {
+  const score = parseFloat(a.niveau_risque);
+  return !isNaN(score) && score < 0.5;
+  });
 
   return (
     <div style={{ padding: "24px", fontFamily: "Arial, sans-serif" }}>
