@@ -1,9 +1,17 @@
 from flask import Flask
-from flask_cors import CORS  #qui autorise React à parler à Flask
+from flask_cors import CORS
+from flask_mail import Mail
+from app.config import Config
 
-def create_app(): #Application factory
+mail = Mail()
+
+def create_app():
     app = Flask(__name__)
-    CORS(app) #active CORS sur toute l'application en une ligne
+    CORS(app)
+    
+    app.config.from_object(Config)
+    
+    mail.init_app(app)
 
     from app.routes.apprenants import apprenants_bp
     from app.routes.predictions import predictions_bp
