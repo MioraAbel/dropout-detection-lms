@@ -31,6 +31,9 @@ function ApprenantCard({ apprenant }) {
       <p style={{ margin: "4px 0", fontSize: "12px", color: "#2ecc71" }}>
         Non à risque : {(apprenant.probabilite_non_decrochage * 100).toFixed(1)}%
       </p>
+      <p style={{ margin: "12px 0 0 0", fontSize: "14px" }}>
+      Statut : <strong>{isRisque ? "À risque de décrochage" : "Actif / Non à risque"}</strong>
+      </p>
     </div>
   );
 }
