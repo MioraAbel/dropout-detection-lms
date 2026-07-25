@@ -1,0 +1,25 @@
+# Environnements virtuels
+venv/
+env/
+.venv/
+
+# Fichiers Python compilés
+__pycache__/
+*.pyc
+
+# Variables d'environnement 
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# Logs et bases de données
+*.log
+*.db
+*.sqlite3
+
+# Fichiers de tests
+.pytest_cache/
+.coverage
