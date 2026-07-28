@@ -5,7 +5,7 @@ from app import mail
 import os
 
 
-alertes_bp=Blueprint("alertes",__name__,"/api/alertes")
+alertes_bp=Blueprint("alertes",__name__,url_prefix="/api/alertes")
 @alertes_bp.route("/",methods=["GET"])
 
 def get_alertes():
@@ -26,17 +26,23 @@ def create_alerte():
     if not message or not alert_id :
         return jsonify({"Erreur": "alert_id et message sont obligatoire"}),400
 
-    alertes_actives = os.getenv("ALERTES_ACTIVE", "true").lower() == "true"
     connection2=get_connection()
     cursor=connection2.cursor(dictionary=True)
-    cursor.execute("INSERT INTO alert (alert_id,message,date_alert)VALUES(%s,%s,NOW()"),(alert_id,message)
+    
+    # 1. Insertion de l'alerte
+    cursor.execute("INSERT INTO alert (alert_id,message,date_alert) VALUES (%s,%s,NOW())",(alert_id,message))
     connection2.commit()
+    
+    # 2. Vérification de la configuration pour l'envoi d'email
+    cursor.execute("SELECT valeur FROM configuration WHERE cle= 'alertes_auto'")
+    config = cursor.fetchone()
     cursor.close()
     connection2.close()
 
-    alertes_acive = config and config["valeur"] =="true"
-    if email_enseignant and alertes_acive :
-        try :
+    alertes_actives = config and config["valeur"] == "true"
+    
+    if email_enseignant and alertes_actives:
+        try:
             msg=Message(
                 subject="Alerte décrochage - Étudiant en risque de décrochage",
                 recipients=[email_enseignant],

@@ -8,17 +8,26 @@ def get_statistiques ():
     cursor= connection.cursor(dictionary=True)
     try:
         #Nombre total d'apprenants réels dans la table :
-        cursor.execute("SELECT COUNT(*) as total FROM dataset_moodle_final")
+        cursor.execute("SELECT COUNT(*) as total FROM student")
         total_apprenants=cursor.fetchone()['total']
 
-        #Nonmbre d'apprenants ont vraiment abondonnée:
-        cursor.execute("SELECT COUNT(*) as abandons FROM dataset_moodle_final WHERE dropout = 1 ")
+        #Nonmbre d'apprenants ont vraiment abondonnée (risque élevé):
+        cursor.execute("SELECT COUNT(*) as abandons FROM student WHERE niveau_risque = 'élevé' ")
         abandons=cursor.fetchone()['abandons']
 
         #Generation d'alertes:
-        cursor.execute("SELECT COUNT(*) as alertes FROM alert")
+        cursor.execute("SELECT COUNT(*) as alertes FROM prediction")
         alertes_generees=cursor.fetchone()['alertes']
 
+        # Calcule de la répartition des risques (pour un graphique en camembert par exemple)
+        cursor.execute("SELECT niveau_risque, COUNT(*) as total FROM student GROUP BY niveau_risque")
+        repartition = cursor.fetchall()
+        
+        repartition_dict = {"faible": 0, "modéré": 0, "élevé": 0}
+        for row in repartition:
+            if row['niveau_risque'] in repartition_dict:
+                repartition_dict[row['niveau_risque']] = row['total']
+                
         #Calcule du taux de decrochage :
         taux_decrochage=0
         if total_apprenants > 0:
@@ -32,7 +41,8 @@ def get_statistiques ():
         "total_apprenants": total_apprenants,
         "taux_decrochage":taux_decrochage,
         "recall": 100,
-        "alertes_generees": alertes_generees
+        "alertes_generees": alertes_generees,
+        "repartition_risques": repartition_dict
     }
     return jsonify(data)
 
