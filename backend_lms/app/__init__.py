@@ -15,13 +15,13 @@ def create_app():
     from app.routes.predictions import predictions_bp
     from app.routes.alertes import alertes_bp    
     from app.routes.utilisateurs import utilisateurs_bp
-    from app.routes.statistiques import statistiques_bp
+    from app.routes.statistiques import stat_bp
 
     app.register_blueprint(apprenants_bp)
     app.register_blueprint(predictions_bp)
     app.register_blueprint(alertes_bp)
     app.register_blueprint(utilisateurs_bp)
-    app.register_blueprint(statistiques_bp)
+    app.register_blueprint(stat_bp)
 
     return app 
 

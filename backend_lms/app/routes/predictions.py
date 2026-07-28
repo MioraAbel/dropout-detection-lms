@@ -15,7 +15,7 @@ def get_prediction():
     return jsonify(predictions)
 
 @predictions_bp.route("/<int:pred_id>",methods=["GET"])
-def get_prediction(pred_id):
+def get_prediction_by_id(pred_id):
     connection=get_connection()
     cursor=connection.cursor(dictionary=True)
     cursor.execute("SELECT * FROM prediction WHERE pred_id=%s",(pred_id,))
@@ -28,7 +28,7 @@ def get_prediction(pred_id):
 
 @predictions_bp.route("/predire",methods=["POST"])
 def faire_predire():
-    data=request.get_json()
+    data=request.get_json(force=True)
     if not data:
         return jsonify({"Erreur":"Aucune donnée trouvé"}),400
     resultats=predire(data)
@@ -43,7 +43,6 @@ def faire_predire():
     """, (
         resultats["risque_decrochage"], 
         resultats["probabilite_decrochage"],
-        resultats["probabilite_decrochage"],
         resultats["probabilite_non_decrochage"],
         resultats["statut"],
         data.get("userid")
@@ -55,7 +54,7 @@ def faire_predire():
         (std_id,risk_score,status,prediction_date) VALUES (%s,%s,%s,NOW())
         """, ( data.get("userid"),
             resultats["probabilite_decrochage"],
-            resultats["risque_decrochage"]
+            resultats["risque_decrochage"],
         ))
 
     connection.commit()
