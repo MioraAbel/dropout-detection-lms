@@ -7,16 +7,11 @@ mail = Mail()
 
 def create_app():
     app = Flask(__name__)
-<<<<<<< HEAD
     CORS(app)
     
     app.config.from_object(Config)
     
     mail.init_app(app)
-=======
-    # Ajoute cette ligne ici, c'est crucial
-    CORS(app)
->>>>>>> yassir
 
     from app.routes.apprenants import apprenants_bp
     from app.routes.predictions import predictions_bp
