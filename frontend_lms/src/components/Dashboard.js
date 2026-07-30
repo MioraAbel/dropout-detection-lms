@@ -9,9 +9,7 @@ function Dashboard() {
     const [loading, setLoading] = useState(true);
     const [erreur, setErreur] = useState(null);
     
-    // Nouvel état pour le bouton d'automatisation
     const [alertesAuto, setAlertesAuto] = useState(false);
-    // État pour le menu interactif
     const [menuActif, setMenuActif] = useState("Tableau de bord");
 
     useEffect(() => {
@@ -41,7 +39,7 @@ function Dashboard() {
     return (
         <div className="app-container">
             
-            {/* --- 1. LA BARRE LATÉRALE BLEUE --- */}
+
             <div className="sidebar">
                 <div style={{ padding: "30px 20px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
                     <div style={{ 
@@ -55,7 +53,7 @@ function Dashboard() {
                     <p style={{ fontSize: "13px", color: "#94a3b8", margin: "5px 0 0 0" }}>Vue Administrateur</p>
                 </div>
                 
-                {/* Menu supprimé pour épurer l'interface de soutenance */}
+
                 
                 <div style={{ marginTop: "auto", padding: "20px", borderTop: "1px solid rgba(255,255,255,0.1)" }}>
                     <p style={{ margin: "0", fontWeight: "bold", fontSize: "14px" }}>Admin Système</p>
@@ -63,7 +61,7 @@ function Dashboard() {
                 </div>
             </div>
 
-            {/* --- 2. LA ZONE PRINCIPALE GRISE --- */}
+
             <div className="main-content">
                 
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 0", marginBottom: "30px" }}>
@@ -74,7 +72,7 @@ function Dashboard() {
                     </div>
                 </div>
 
-                {/* --- 3. LES 4 CARTES KPI --- */}
+
                 <div id="section-statistiques" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px", marginBottom: "30px" }}>
                     <div className="fst-card">
                         <h3 style={{ margin: "0 0 15px 0", fontSize: "14px", color: "var(--text-gray)", fontWeight: "normal" }}>Total apprenants</h3>
@@ -94,10 +92,10 @@ function Dashboard() {
                     </div>
                 </div>
 
-                {/* --- 4. LES WIDGETS DU BAS --- */}
+
                 <div id="section-configuration" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "20px", paddingBottom: "50px" }}>
                     
-                    {/* Widget 1 : Répartition */}
+
                     <div className="fst-card">
                         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
                             <div style={{ width: "4px", height: "16px", backgroundColor: "var(--fst-orange)" }}></div>
@@ -106,7 +104,7 @@ function Dashboard() {
                         <RiskChart apprenants={apprenants} />
                     </div>
 
-                    {/* Widget 2 : Configuration */}
+
                     <div className="fst-card">
                         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
                             <div style={{ width: "4px", height: "16px", backgroundColor: "var(--fst-orange)" }}></div>
@@ -121,7 +119,7 @@ function Dashboard() {
                             <span>50%</span>
                         </div>
                         
-                        {/* --- LE BOUTON D'ALERTE AUTO (Connecté à n8n) --- */}
+
                         <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #f1f5f9", padding: "15px 0", fontSize: "14px", alignItems: "center" }}>
                             <span>Alertes auto</span>
                             
@@ -130,7 +128,7 @@ function Dashboard() {
                                     const nouvelEtat = !alertesAuto;
                                     setAlertesAuto(nouvelEtat);
                                     
-                                    // Le Wow Effect pour la soutenance (Lancement vers n8n)
+
                                     if (nouvelEtat === true && aRisque.length > 0) {
                                         const etudiantEnDanger = aRisque[0]; 
                                         
@@ -166,7 +164,7 @@ function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Widget 3 : Utilisateurs */}
+
                     <div className="fst-card">
                         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
                             <div style={{ width: "4px", height: "16px", backgroundColor: "var(--fst-orange)" }}></div>

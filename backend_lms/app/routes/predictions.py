@@ -61,7 +61,3 @@ def faire_predire():
     cursor.close()
     connection.close()
     return jsonify(resultats),200
-
-
-
-

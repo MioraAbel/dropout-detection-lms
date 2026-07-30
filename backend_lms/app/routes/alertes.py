@@ -29,11 +29,9 @@ def create_alerte():
     connection2=get_connection()
     cursor=connection2.cursor(dictionary=True)
     
-    # 1. Insertion de l'alerte
     cursor.execute("INSERT INTO alert (alert_id,message,date_alert) VALUES (%s,%s,NOW())",(alert_id,message))
     connection2.commit()
     
-    # 2. Vérification de la configuration pour l'envoi d'email
     cursor.execute("SELECT valeur FROM configuration WHERE cle= 'alertes_auto'")
     config = cursor.fetchone()
     cursor.close()

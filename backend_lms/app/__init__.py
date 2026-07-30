@@ -24,10 +24,3 @@ def create_app():
     app.register_blueprint(stat_bp)
 
     return app 
-
-
-        
-    
-        
-
-

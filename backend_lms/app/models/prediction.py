@@ -4,7 +4,6 @@ import os
 
 BASE_DIR=os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
-#Chargement du modele dee stacking et du Scaler
 model = joblib.load(os.path.join(BASE_DIR,"stacking_model.pkl"))
 scaler= joblib.load(os.path.join(BASE_DIR,"scaler.pkl"))
 features = joblib.load(os.path.join(BASE_DIR,"features.pkl"))
@@ -43,9 +42,3 @@ def predire_batch(liste_donnees : list) -> list :
             "probabilite_decrochage":round(float(proba[1]),3)
         })
     return resultats
-
-
-
-
-
-
