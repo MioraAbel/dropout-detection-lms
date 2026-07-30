@@ -2,8 +2,6 @@ from flask import Blueprint , request, jsonify
 from flask_mail import Message
 from app.database import get_connection
 from app import mail
-import os
-
 
 alertes_bp=Blueprint("alertes",__name__,url_prefix="/api/alertes")
 @alertes_bp.route("/",methods=["GET"])
@@ -25,6 +23,17 @@ def create_alerte():
     email_enseignant=data.get("email_enseignant")
     if not message or not alert_id :
         return jsonify({"Erreur": "alert_id et message sont obligatoire"}),400
+
+    # Sauvegarde en base de données
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute(
+        "INSERT INTO alert (alert_id, message, date_alert) VALUES (%s, %s, NOW())",
+        (alert_id, message)
+    )
+    connection.commit()
+    cursor.close()
+    connection.close()
 
     connection2=get_connection()
     cursor=connection2.cursor(dictionary=True)

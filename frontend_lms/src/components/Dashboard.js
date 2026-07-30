@@ -10,7 +10,7 @@ function Dashboard() {
     const [erreur, setErreur] = useState(null);
     
     const [alertesAuto, setAlertesAuto] = useState(false);
-    const [menuActif, setMenuActif] = useState("Tableau de bord");
+
 
     useEffect(() => {
         axios.all([
@@ -34,7 +34,7 @@ function Dashboard() {
     if (erreur) return <p style={{color : "red"}}>{erreur}</p>;
 
     const aRisque = apprenants.filter(a => a.niveau_risque === "élevé" || a.niveau_risque === "modéré");
-    const ok = apprenants.filter(a => a.niveau_risque === "faible");
+
 
     return (
         <div className="app-container">

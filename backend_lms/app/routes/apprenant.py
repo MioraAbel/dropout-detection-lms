@@ -1,35 +1,27 @@
 from flask import Blueprint, jsonify
 from app.database import get_connection
 from app.models.prediction import predire_batch
-import pandas as pd
-import os
 
 apprenants_bp = Blueprint("apprenants", __name__, url_prefix="/api/apprenants")
 
 @apprenants_bp.route("/", methods=["GET"])
 def get_apprenants():
+    # 1. Connexion et récupération des données depuis la base de données
     connection = get_connection()
     cursor = connection.cursor(dictionary=True)
-    query = "SELECT * FROM student"
+    query = "SELECT * FROM dataset_moodle_final"
     cursor.execute(query)
     data = cursor.fetchall()
-    cursor.close()
-    connection.close()
-
-    chemin_csv = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "dataset_moodle_final.csv")
     
-    try:
-        df_features = pd.read_csv(chemin_csv)
-        features_list = df_features.to_dict(orient="records")
-    except Exception as e:
-        print("Erreur lors de la lecture du CSV:", e)
-        features_list = []
-
-    predictions = predire_batch(features_list)
-
+    # 2. Exécution des prédictions directement avec les données de la BDD
+    predictions = predire_batch(data)
+    
+    # 3. Formatage de la réponse
     apprenants = []
-    for row, pred in zip(data, predictions):
+    for i, (row, pred) in enumerate(zip(data, predictions)):
         prob = pred["probabilite_decrochage"]
+        
+        # Calcul du niveau de risque en texte
         if prob >= 0.7:
             niveau = "élevé"
         elif prob >= 0.4:
@@ -37,13 +29,18 @@ def get_apprenants():
         else:
             niveau = "faible"
             
+        # Utilisation des identifiants et emails générés 
         apprenants.append({
-            "std_id": row["std_id"],
-            "nom": row["nom"],
-            "email": row["email"],
+            "std_id": f"ID_{i+1}",
+            "nom": f"Etudiant {i+1}",
+            "email": f"etudiant{i+1}@fsts.ac.ma",
             "niveau_risque": niveau,
             "probabilite_decrochage": prob,
             "probabilite_non_decrochage": pred["probabilite_non_decrochage"]
         })
-
+    
+    # 4. Fermeture de la connexion
+    cursor.close()
+    connection.close()
+    
     return jsonify(apprenants)
