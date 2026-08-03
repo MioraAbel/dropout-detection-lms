@@ -1,0 +1,17 @@
+# Datasets confidentiels
+dataset_moodle_features.csv
+dataset_moodle_final.csv
+moodle_features_ready.csv
+
+# Modèles sérialisés (trop lourds)
+*.pkl
+
+# Fichiers système
+__pycache__/
+*.pyc
+.env
+
+# Fichiers temporaires
+~$*
+*.tmp
+*.docx
