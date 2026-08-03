@@ -18,10 +18,8 @@ def predire(donnees: dict) -> dict:
     prob_non_risque = round(float(probas[0]), 3)
     prob_risque     = round(float(probas[1]), 3)
 
-    if prob_risque >= 0.7:
+    if prob_risque >= 0.5:
         niveau = "élevé"
-    elif prob_risque >= 0.4:
-        niveau = "modéré"
     else:
         niveau = "faible"
     

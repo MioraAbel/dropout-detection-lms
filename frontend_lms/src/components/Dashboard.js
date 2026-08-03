@@ -132,7 +132,7 @@ function Dashboard() {
                                     if (nouvelEtat === true && aRisque.length > 0) {
                                         const etudiantEnDanger = aRisque[0]; 
                                         
-                                        axios.post("http://localhost:5678/webhook-test/0391d78a-1e2f-4ff4-ab3e-e2b3cd814eb9", {
+                                        axios.post("http://localhost:5678/webhook/1a67a5ab-d186-4fd5-9e5c-b95900e56a54", {
                                             etudiant: etudiantEnDanger.nom || etudiantEnDanger.email,
                                             risque: "Critique",
                                             message: "Détection automatique depuis le Dashboard IA !"

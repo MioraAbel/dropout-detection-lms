@@ -21,11 +21,8 @@ def get_apprenants():
     for i, (row, pred) in enumerate(zip(data, predictions)):
         prob = pred["probabilite_decrochage"]
         
-        # Calcul du niveau de risque en texte
-        if prob >= 0.7:
+        if prob >= 0.5:
             niveau = "élevé"
-        elif prob >= 0.4:
-            niveau = "modéré"
         else:
             niveau = "faible"
             
@@ -36,7 +33,9 @@ def get_apprenants():
             "email": f"etudiant{i+1}@fsts.ac.ma",
             "niveau_risque": niveau,
             "probabilite_decrochage": prob,
-            "probabilite_non_decrochage": pred["probabilite_non_decrochage"]
+            "probabilite_non_decrochage": pred["probabilite_non_decrochage"],
+            "login_count": int(float(row.get("login_count", 0))),
+            "average_grade": round(float(row.get("average_grade", 0)), 2)
         })
     
     # 4. Fermeture de la connexion

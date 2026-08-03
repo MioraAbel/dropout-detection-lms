@@ -24,4 +24,4 @@ def moodle_api():
 
 if __name__ == '__main__':
     print("Serveur Moodle simule demarre sur http://127.0.0.1:5001")
-    app.run(port=5001)
+    app.run(host="0.0.0.0", port=5001)

@@ -19,16 +19,14 @@ def get_statistiques():
         predictions = predire_batch(data)
         
         # 3. On calcule les couleurs du graphique en direct
-        repartition_dict = {"faible": 0, "modéré": 0, "élevé": 0}
+        repartition_dict = {"faible": 0, "élevé": 0}
         abandons = 0
         
         for pred in predictions:
             prob = pred["probabilite_decrochage"]
-            if prob >= 0.7:
+            if prob >= 0.5:
                 niveau = "élevé"
                 abandons += 1
-            elif prob >= 0.4:
-                niveau = "modéré"
             else:
                 niveau = "faible"
                 
