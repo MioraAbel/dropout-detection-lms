@@ -26,8 +26,8 @@ def predire(donnees: dict) -> dict:
     return {
         "probabilite_non_decrochage": prob_non_risque,
         "probabilite_decrochage": prob_risque,
-        "status": "risque" if prob_risque >= 0.5 else "sain", # ON GARDE CA INTACT (pour ne rien casser)
-        "risque_decrochage": niveau                           # ON AJOUTE ÇA !
+        "status": "risque" if prob_risque >= 0.5 else "sain",
+        "risque_decrochage": niveau                           
     }
 
 def predire_batch(liste_donnees: list) -> list:

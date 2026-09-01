@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Dashboard from './components/Dashboard';
+import DashboardTeacher from './components/Dashboard_teacher';
 import ProfilUtilisateur from './components/ProfilUtilisateur';
 import Login from './components/Login';
 import './App.css';
@@ -23,6 +24,19 @@ function App() {
                   </button>
               </div>
               <Dashboard />
+          </div>
+      )}
+
+      {/* Si c'est l'Enseignant, on affiche le DashboardTeacher */}
+      {user && user.role === "enseignant" && (
+          <div>
+              <div style={{ padding: "10px", backgroundColor: "#fff", borderBottom: "1px solid #ccc", textAlign: "right" }}>
+                  <span style={{ marginRight: "20px", fontWeight: "bold" }}>Connecté en tant que: {user.email}</span>
+                  <button onClick={() => setUser(null)} style={{ padding: "8px 15px", cursor: "pointer", backgroundColor: "#ef4444", color: "white", border: "none", borderRadius: "5px" }}>
+                      Se déconnecter
+                  </button>
+              </div>
+              <DashboardTeacher />
           </div>
       )}
 
